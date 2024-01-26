@@ -14,14 +14,23 @@ import { Button } from "@/components/ui/button";
 import { SignupValidation } from "@/lib/validation";
 import { z } from "zod";
 import { Loader } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
-import { useCreateUserAccount } from "@/lib/react-query/queriesAndMutations";
+import {
+  useCreateUserAccount,
+  useSignInAccount,
+} from "@/lib/react-query/queriesAndMutations";
+import { useUserContext } from "@/context/AuthContext";
 
 const SignupForm = () => {
   const { toast } = useToast();
-  const { mutateAsync: createUserAccount, isLoading: isCreatingUser } =
+  const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
+  const navigate = useNavigate();
+  const { mutateAsync: createUserAccount, isPending: isCreatingAccount } =
     useCreateUserAccount();
+
+  const { mutateAsync: signInAccount, isPending: isSigningIn } =
+    useSignInAccount();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof SignupValidation>>({
@@ -45,8 +54,26 @@ const SignupForm = () => {
       });
     }
 
-    // const session = await signInAccount();
+    const session = await signInAccount({
+      email: values.email,
+      password: values.password,
+    });
 
+    if (!session) {
+      return toast({
+        title: "Account created but SignIn failed please try again",
+      });
+    }
+
+    const isLoggedin = await checkAuthUser();
+
+    if (isLoggedin) {
+      form.reset();
+
+      navigate("/");
+    } else {
+      toast({ title: "Signup failed.Please try again." });
+    }
     console.log(newUser);
   }
   return (
@@ -126,7 +153,7 @@ const SignupForm = () => {
           />
 
           <Button type="submit" className="shad-button_primary">
-            {isCreatingUser ? (
+            {isCreatingAccount ? (
               <div className="flex flex-center">
                 <Loader /> Loading...
               </div>
@@ -140,7 +167,9 @@ const SignupForm = () => {
             <Link
               to="/sign-in"
               className="text-primary-500 text-small-semibold ml-1"
-            ></Link>
+            >
+              Sign-in
+            </Link>
           </p>
         </form>
       </div>
