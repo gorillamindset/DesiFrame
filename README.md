@@ -1,11 +1,15 @@
 ## <a name="tech-stack"> Tech Stack</a>
 
 - React.js
+- vite
 - Appwrite
 - React Query
 - TypeScript
 - Shadcn
 - Tailwind CSS
+- 
+## <a name="features">Features</a>
+To use it just clone the repository locally and install the dependencies locally and run "npm run dev" 
 
 ## <a name="features">Features</a>
 
