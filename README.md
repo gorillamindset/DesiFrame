@@ -8,7 +8,7 @@
 - Shadcn
 - Tailwind CSS
 - 
-## <a name="features">Features</a>
+## <a name="features">clone this repository</a>
 To use it just clone the repository locally and install the dependencies locally and run "npm run dev" 
 
 ## <a name="features">Features</a>
