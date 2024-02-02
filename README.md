@@ -7,9 +7,10 @@
 - TypeScript
 - Shadcn
 - Tailwind CSS
-- 
+  
 ## <a name="features">clone this repository</a>
 To use it just clone the repository locally and install the dependencies locally and run "npm run dev" 
+just change the variables in the appwriteconfig file to your appwrite account  credentials
 
 ## <a name="features">Features</a>
 
